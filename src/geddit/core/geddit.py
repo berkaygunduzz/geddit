@@ -32,7 +32,7 @@ def login(username: str = None, password: str = None, cli_id: str = None, secret
                 password = env_f.readline().strip()
     except FileNotFoundError:
         if not username or not password:
-            raise ValueError('No username or password specified')
+            return None
         with open(".env", "w+") as env_f:
             env_f.write(username + "\n" + password)
 
