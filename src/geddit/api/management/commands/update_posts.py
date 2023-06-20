@@ -3,6 +3,7 @@ from api.models import Post
 import core.geddit as geddit
 import os
 
+# Update database for subreddit's listening
 class Command(BaseCommand):
 
     def handle(self, *args, **options):

@@ -7,6 +7,18 @@ import os
 import json
 
 
+# Get posts from a subreddit
+def get_all(request):
+    q = Post.objects.all().order_by('-created').values()
+
+    if not q:
+        raise Http404(
+            "No entries found. Please add subreddit to the listening Subreddit's list.")
+
+    return JsonResponse(list(q), safe=False)
+
+
+# Get posts from a subreddit
 def get(request, subreddit: str):
     # Query of the post ordered by desc created time
     q = Post.objects.filter(subreddit=subreddit).order_by('-created').values()
@@ -18,23 +30,28 @@ def get(request, subreddit: str):
     return JsonResponse(list(q), safe=False)
 
 
+# Add a subreddit name to subreddit listening list
 def add(request, subreddit: str):
     geddit.add_subreddit(subreddit)
     return HttpResponse('Subreddit added to the listening list.')
 
 
+# Register credentials of the user
 def register(request):
     if request.method == "POST":
+        # Delete tokens file
         try:
             os.remove(".geddit")
         except FileNotFoundError:
             pass
 
+        # Delete credentials file
         try:
             os.remove(".env")
         except FileNotFoundError:
             pass
 
-        geddit.login(request.POST['username'], request.POST['password'], request.POST['cli_id'], request.POST['secret'])
+        geddit.login(request.POST['username'], request.POST['password'],
+                     request.POST['cli_id'], request.POST['secret'])
         return HttpResponse('Successfully registered!')
     return render(request, 'api/register.html')

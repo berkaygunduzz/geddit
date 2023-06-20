@@ -5,13 +5,26 @@ from django.utils.timezone import make_aware
 import datetime
 
 
+# URL path perma's to request
 LATEST = 'new'
 MOST_LIKED = 'top'
 POPULAR = 'hot'
 
 
-# Login Reddit account, returns headers dict
+"""
+Login Reddit account
+
+@param username: Reddit username
+@param password: Reddit password
+@param cli_id: Reddit API personal use script
+@param secret: Reddit API secret token
+@param encoding: Encoding to be used in files
+@return: Headers to make requests
+@raise ValueError: No cli_id, secret specified
+"""
 def login(username: str = None, password: str = None, cli_id: str = None, secret: str = None, encoding: str = 'utf-8') -> dict:
+
+    # Add to environment list if not alreadt set
     try:
         with open('.env', 'r+') as env_f:
             if not username or not password:
@@ -65,11 +78,21 @@ def login(username: str = None, password: str = None, cli_id: str = None, secret
     return headers
 
 
-# Get posts
-def get(subreddit: str, type: str = LATEST, limit: int = 10, headers: dict = None) -> dict:
+"""
+Get posts from subreddit
+
+@param subreddit: Subreddit name
+@param type: Type of request
+@param limit: No of posts to get
+@param header: Headers to authorize
+@return: List of posts as dict
+"""
+def get(subreddit: str, type: str = LATEST, limit: int = 10, headers: dict = None) -> list:
 
     # URL to make request
     request_url = f"https://oauth.reddit.com/r/{subreddit}/{type}.json?limit={limit}"
+
+    # Request without authorization if headers not set
     if not headers:
         request_url = f"https://www.reddit.com/r/{subreddit}/{type}.json?limit={limit}"
 
@@ -94,10 +117,18 @@ def get(subreddit: str, type: str = LATEST, limit: int = 10, headers: dict = Non
     return results
 
 
-# Add Subreddit name to listen
+"""
+Add subreddit name to listening list
+
+@param subreddit: Subreddit name
+"""
 def add_subreddit(subreddit: str) -> None:
+
+    # Do nothing if already listening
     if subreddit in get_subreddit_list():
         return
+
+    # If file is not already created, create one
     try:
         with open('.gedditlisten', 'a+') as sub_list_f:
             sub_list_f.write(subreddit + '\n')
@@ -106,9 +137,15 @@ def add_subreddit(subreddit: str) -> None:
             sub_list_f.write(subreddit + '\n')
 
 
-# Get list of listening Subreddits
+"""
+Get subreddit names in listening list
+
+@return: List of subreddit names
+"""
 def get_subreddit_list() -> list:
     sub_list = list()
+
+    # Return empty list if there is no list
     try:
         with open('.gedditlisten', 'r+') as sub_list_f:
             sub_list = sub_list_f.read().split('\n')[:-1]
