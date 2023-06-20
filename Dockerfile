@@ -23,7 +23,7 @@ RUN apt-get update
 RUN apt-get -y install cron
 
 # Add the cron job
-RUN crontab -l | { cat; echo "0 0/1 * 1/1 * ? * python3 src/geddit/manage.py update_posts"; } | crontab -
-RUN cron
+COPY geddit_crontab /etc/cron.d/geddit_crontab
+RUN chmod 0644 /etc/cron.d/geddit_crontab && crontab /etc/cron.d/geddit_crontab
 
 CMD python3 src/geddit/manage.py runserver 0.0.0.0:8000
