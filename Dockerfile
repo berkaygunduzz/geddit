@@ -24,6 +24,7 @@ RUN apt-get -y install cron
 
 # Add the cron job
 COPY geddit_crontab /etc/cron.d/geddit_crontab
-RUN chmod 0644 /etc/cron.d/geddit_crontab && crontab /etc/cron.d/geddit_crontab
+RUN chmod 0644 /etc/cron.d/geddit_crontab
+RUN crontab /etc/cron.d/geddit_crontab
 
 CMD python3 src/geddit/manage.py runserver 0.0.0.0:8000

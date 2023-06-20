@@ -22,6 +22,8 @@ Login Reddit account
 @return: Headers to make requests
 @raise ValueError: No credentials specified
 """
+
+
 def login(username: str = None, password: str = None, cli_id: str = None, secret: str = None, encoding: str = 'utf-8') -> dict:
 
     # Add to environment list if not alreadt set
@@ -89,6 +91,8 @@ Get posts from subreddit
 @param header: Headers to authorize
 @return: List of posts as dict
 """
+
+
 def get(subreddit: str, type: str = LATEST, limit: int = 10, headers: dict = None) -> list:
 
     # URL to make request
@@ -124,6 +128,8 @@ Add subreddit name to listening list
 
 @param subreddit: Subreddit name
 """
+
+
 def add_subreddit(subreddit: str) -> None:
 
     # Do nothing if already listening
@@ -144,6 +150,8 @@ Get subreddit names in listening list
 
 @return: List of subreddit names
 """
+
+
 def get_subreddit_list() -> list:
     sub_list = list()
 
@@ -154,4 +162,3 @@ def get_subreddit_list() -> list:
     except FileNotFoundError:
         sub_list = []
     return sub_list
-

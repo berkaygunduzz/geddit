@@ -4,7 +4,7 @@ from django.http import JsonResponse, Http404, HttpResponse
 from .models import Post
 import core.geddit as geddit
 import os
-import json
+from django.core import management
 
 
 # Get posts from a subreddit
@@ -33,6 +33,7 @@ def get(request, subreddit: str):
 # Add a subreddit name to subreddit listening list
 def add(request, subreddit: str):
     geddit.add_subreddit(subreddit)
+    management.call_command('update_posts')
     return HttpResponse('Subreddit added to the listening list.')
 
 
