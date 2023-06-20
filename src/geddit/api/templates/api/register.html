@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <title>Register geddit</title>
+</head>
+<body>
+    <form name="reg-form">
+        <label for="username">Username: </label><input type="text" id="username">
+        <br>
+        <br>
+        <label for="password">Password: </label><input type="password" id="password">
+        <br>
+        <br>
+        <label for="cli_id">Personal use script: </label><input type="password" id="cli_id">
+        <br>
+        <br>
+        <label for="secret">Secret token: </label><input type="password" id="secret">
+        <br>
+        <br>
+        <input type="button" value="Register" id="register" onclick="register_system()">
+    </form>
+</body>
+<script>
+    function register_system() {
+        var data = {
+            'username': document.getElementById('username').value,
+            'password': document.getElementById('password').value,
+            'cli_id': document.getElementById('cli_id').value,
+            'secret': document.getElementById('secret').value,
+        };
+        $.ajax({
+            url: "/api/register",
+            type: "POST",
+            data: data,
+            success: function(response) {
+                alert("success");
+            },
+            error: function(response) {
+                alert("error");
+            }
+        });
+    }
+</script>
+</html>
