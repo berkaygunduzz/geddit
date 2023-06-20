@@ -20,7 +20,7 @@ Login Reddit account
 @param secret: Reddit API secret token
 @param encoding: Encoding to be used in files
 @return: Headers to make requests
-@raise ValueError: No cli_id, secret specified
+@raise ValueError: No credentials specified
 """
 def login(username: str = None, password: str = None, cli_id: str = None, secret: str = None, encoding: str = 'utf-8') -> dict:
 
@@ -31,6 +31,8 @@ def login(username: str = None, password: str = None, cli_id: str = None, secret
                 username = env_f.readline().strip()
                 password = env_f.readline().strip()
     except FileNotFoundError:
+        if not username or not password:
+            raise ValueError('No username or password specified')
         with open(".env", "w+") as env_f:
             env_f.write(username + "\n" + password)
 

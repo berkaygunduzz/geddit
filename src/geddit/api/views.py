@@ -13,7 +13,7 @@ def get_all(request):
 
     if not q:
         raise Http404(
-            "No entries found. Please add subreddit to the listening Subreddit's list.")
+            "No entries found. Please add a subreddit to the listening Subreddit's list.")
 
     return JsonResponse(list(q), safe=False)
 
@@ -25,7 +25,7 @@ def get(request, subreddit: str):
 
     if not q:
         raise Http404(
-            "No entries found for subreddit. Please add subreddit to the listening Subreddit's list.")
+            "No entries found for subreddit. Please ad a subreddit to the listening Subreddit's list.")
 
     return JsonResponse(list(q), safe=False)
 
