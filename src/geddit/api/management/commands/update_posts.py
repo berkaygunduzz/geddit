@@ -10,6 +10,8 @@ class Command(BaseCommand):
         try:
             headers = geddit.login()
             sub_list = geddit.get_subreddit_list()
+            if not sub_list:
+                return -1
             for sub in sub_list:
                 posts = geddit.get(subreddit=sub, headers=headers)
                 for post in posts:

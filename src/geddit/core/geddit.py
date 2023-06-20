@@ -109,16 +109,19 @@ def get(subreddit: str, type: str = LATEST, limit: int = 10, headers: dict = Non
     results = list()
 
     # Scrap important data
-    for post in result_raw.json()['data']['children']:
-        results.append({
-            'subreddit': subreddit,
-            'title': post['data']['title'],
-            'author': post['data']['author'],
-            'subtext': post['data']['selftext'],
-            'permalink': post['data']['permalink'],
-            'URL': post['data']['url'],
-            'created': make_aware(datetime.datetime.utcfromtimestamp(post['data']['created'])),
-        })
+    try:
+        for post in result_raw.json()['data']['children']:
+            results.append({
+                'subreddit': subreddit,
+                'title': post['data']['title'],
+                'author': post['data']['author'],
+                'subtext': post['data']['selftext'],
+                'permalink': post['data']['permalink'],
+                'URL': post['data']['url'],
+                'created': make_aware(datetime.datetime.utcfromtimestamp(post['data']['created'])),
+            })
+    except KeyError:
+        print(result_raw.json())
 
     return results
 
