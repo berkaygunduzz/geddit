@@ -165,5 +165,5 @@ cython_debug/
 .geddit*
 .env
 
-**/migrations/*
-!**migrations/__init__.py
+**/migrations/*.py
+!**/migrations/__init__.py
