@@ -163,6 +163,7 @@ cython_debug/
 .vscode/
 
 .geddit*
+.env
 
 **/migrations/*
 !**migrations/__init__.py

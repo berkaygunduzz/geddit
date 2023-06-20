@@ -1,6 +1,7 @@
 import requests
 import base64
 from cryptography.fernet import Fernet
+from django.utils.timezone import make_aware
 import datetime
 
 
@@ -10,7 +11,15 @@ POPULAR = 'hot'
 
 
 # Login Reddit account, returns headers dict
-def login(username: str, password: str, cli_id: str = None, secret: str = None, encoding: str = 'utf-8') -> dict:
+def login(username: str = None, password: str = None, cli_id: str = None, secret: str = None, encoding: str = 'utf-8') -> dict:
+    try:
+        with open('.env', 'r+') as env_f:
+            if not username or not password:
+                username = env_f.readline().strip()
+                password = env_f.readline().strip()
+    except FileNotFoundError:
+        with open(".env", "w+") as env_f:
+            env_f.write(username + "\n" + password)
 
     # Encrypt/decrypt class, uses 'username + password' as key
     f = Fernet(base64.urlsafe_b64encode(
@@ -78,8 +87,8 @@ def get(subreddit: str, type: str = LATEST, limit: int = 10, headers: dict = Non
             'author': post['data']['author'],
             'subtext': post['data']['selftext'],
             'permalink': post['data']['permalink'],
-            'url': post['data']['url'],
-            'created': post['data']['created'],
+            'URL': post['data']['url'],
+            'created': make_aware(datetime.datetime.utcfromtimestamp(post['data']['created'])),
         })
 
     return results

@@ -4,11 +4,12 @@ from django.http import JsonResponse, Http404, HttpResponse
 from .models import Post
 import core.geddit as geddit
 import os
+import json
 
 
 def get(request, subreddit: str):
     # Query of the post ordered by desc created time
-    q = Post.objects.filter(subreddit=subreddit).order_by('-created')
+    q = Post.objects.filter(subreddit=subreddit).order_by('-created').values()
 
     if not q:
         raise Http404(
@@ -24,12 +25,16 @@ def add(request, subreddit: str):
 
 def register(request):
     if request.method == "POST":
-        os.environ["GEDDIT_USERNAME"] = request.POST['username']
-        os.environ["GEDDIT_PASSWORD"] = request.POST['password']
         try:
             os.remove(".geddit")
         except FileNotFoundError:
             pass
+
+        try:
+            os.remove(".env")
+        except FileNotFoundError:
+            pass
+
         geddit.login(request.POST['username'], request.POST['password'], request.POST['cli_id'], request.POST['secret'])
         return HttpResponse('Successfully registered!')
     return render(request, 'api/register.html')
