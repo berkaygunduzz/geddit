@@ -14,7 +14,7 @@ WORKDIR /code
 
 EXPOSE 8000
 
-# runs the production server
+# Sets the production server
 RUN python3 src/geddit/manage.py makemigrations
 RUN python3 src/geddit/manage.py migrate
 
@@ -27,4 +27,4 @@ COPY geddit_crontab /etc/cron.d/geddit_crontab
 RUN chmod 0644 /etc/cron.d/geddit_crontab
 RUN crontab /etc/cron.d/geddit_crontab
 
-CMD python3 src/geddit/manage.py runserver 0.0.0.0:8000
+CMD cron && python3 src/geddit/manage.py runserver 0.0.0.0:8000

@@ -121,7 +121,7 @@ def get(subreddit: str, type: str = LATEST, limit: int = 10, headers: dict = Non
                 'created': make_aware(datetime.datetime.utcfromtimestamp(post['data']['created'])),
             })
     except KeyError:
-        print(result_raw.json())
+        print("Error: ", subreddit, result_raw.json())
 
     return results
 

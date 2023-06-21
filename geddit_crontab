@@ -1,1 +1,1 @@
-0 0/1 * 1/1 * ? * python3 /code/src/geddit/manage.py update_posts
+* * * * * python3 /code/src/geddit/manage.py update_posts

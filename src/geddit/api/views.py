@@ -9,6 +9,10 @@ from django.core import management
 
 # Get posts from a subreddit
 def get_all(request):
+
+    # Update database before pulling
+    management.call_command('update_posts')
+
     q = Post.objects.all().order_by('-created').values()
 
     if not q:
@@ -20,6 +24,10 @@ def get_all(request):
 
 # Get posts from a subreddit
 def get(request, subreddit: str):
+
+    # Update database before pulling
+    management.call_command('update_posts')
+
     # Query of the post ordered by desc created time
     q = Post.objects.filter(subreddit=subreddit).order_by('-created').values()
 
@@ -33,9 +41,7 @@ def get(request, subreddit: str):
 # Add a subreddit name to subreddit listening list
 def add(request, subreddit: str):
     geddit.add_subreddit(subreddit)
-    result = management.call_command('update_posts')
-    if result == -1:
-        HttpResponse('Subreddit added to the listening list but returned no data.')
+    management.call_command('update_posts')
     return HttpResponse('Subreddit added to the listening list.')
 
 
