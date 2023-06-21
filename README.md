@@ -21,7 +21,7 @@ A Python service to wrap Reddit posts
 `http://localhost:8000/api/add/<subreddit_name>`
 
 - If you already added a Subreddit to be listened, you can get posts as
-`http://localhost:8000/api/get`
+`http://localhost:8000/api/get` or
 `http://localhost:8000/api/get/<subreddit_name>`
 
 ## How it works?
