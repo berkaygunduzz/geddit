@@ -12,7 +12,9 @@ A Python service to wrap Reddit posts
 - Run Docker image
 `docker run -it -p 8000:8000 geddit`
 
-- Open http://localhost:8000/api/register to register your credentials (only once)
+- Get credentials needed for API calls to Reddit via https://www.reddit.com/prefs/apps, click `create another app`, fill details, make sure to select `script`
+
+- Open http://localhost:8000/api/register to register your credentials you created previous step
 
 - Now, you can use via make API calls
 
